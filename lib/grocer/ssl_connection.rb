@@ -28,8 +28,10 @@ module Grocer
         if certificate.respond_to?(:read)
           cert_data = certificate.read
           certificate.rewind if certificate.respond_to?(:rewind)
-        else
+        elsif File.exists?(certificate)
           cert_data = File.read(certificate)
+        else
+          cert_data = certificate
         end
 
         context.key  = OpenSSL::PKey::RSA.new(cert_data, passphrase)
