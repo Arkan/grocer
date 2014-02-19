@@ -76,6 +76,14 @@ module Grocer
       validate_payload rescue false
     end
 
+    def payload_too_large?
+      encoded_payload.bytesize > MAX_PAYLOAD_SIZE
+    end
+
+    def payload_bytesize
+      encoded_payload.bytesize
+    end
+
     private
 
     def encoded_payload
@@ -90,10 +98,6 @@ module Grocer
       aps_hash[:'content-available'] = content_available if content_available
 
       { aps: aps_hash }.merge(custom || { })
-    end
-
-    def payload_too_large?
-      encoded_payload.bytesize > MAX_PAYLOAD_SIZE
     end
 
     def expiry_epoch_time
